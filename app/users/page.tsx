@@ -1,13 +1,11 @@
-import Link from "next/link";
-import { Suspense } from "react";
+import UserTable from "./UserTable";
 
 
-const UsersPage = () => {
+const UsersPage = async () => {
     return (
         <>
-        <div> Users page </div>
-            <Link href="/users/new" className="btn"> Add user </Link>
-        </>
+            <UserTable />
+        </> 
     )
 }
 

@@ -2,13 +2,18 @@
 import React from 'react'
 
 interface Props {
-    params: { slug: String[] },
-    searchParams: { sortOrder: string}
+  params: { slug: string[] };
+  searchParams: { sortOrder: string }
 }
 
-const ProductsPage = ( { params: { slug }, searchParams: { sortOrder } }: Props) => {
+// ...Slug 3 dots at the start so we can accept a varying number of parameters
+
+const ProductsPage = ({ params, searchParams }: Props) => {
   return (
-    <div>ProductsPage { slug } { sortOrder }</div>
+    <>
+      Products page
+      <div> { params.slug } sort by: {searchParams.sortOrder} </div>
+    </>
   )
 }
 

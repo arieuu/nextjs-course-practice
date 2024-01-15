@@ -18,5 +18,15 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  padding: 1rem;
+}
+
+/* overriding tailwind default styles in its base layer */
+
+@layer base {
+  h1 {
+
+    /* With apply we can apply any of the tailwind classes */
+
+    @apply font-extrabold text-2xl mb-5;
+  }
 }
