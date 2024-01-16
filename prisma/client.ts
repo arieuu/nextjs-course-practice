@@ -1,3 +1,8 @@
+// This prisma client allows us to do things and interact with our model
+
+// This troubleshooting piece of code is here because in dev mode fast refresh creates
+// too many instances of prisma client
+
 import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {

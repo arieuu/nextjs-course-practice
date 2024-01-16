@@ -17,7 +17,6 @@ export function GET(request: NextRequest, { params }: Props) {
 }
 
 
-
 // Edit a specific user
 
 interface Props {
