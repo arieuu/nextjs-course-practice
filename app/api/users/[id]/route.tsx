@@ -1,41 +1,16 @@
-import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/prisma/client";
+
+// Route to get objects by id
 
 interface Props {
-    params: { id: string }
+    params: { id: number }
 }
 
-// ROUTE TO GET SPECIFIC USER
+export function GET(request: NextRequest, { params }: Props) {
 
-export async function GET(request: NextRequest, { params }: Props) {
-
-    const user = await prisma.user.findUnique({
-        where: {
-            id: parseInt(params.id)
-        }
-    })
-
-    if (!user) {
-        return NextResponse.json({ error: "user not found"})
-
-    } 
-
-    return NextResponse.json(user)
-}
-
-// ROUTE TO EDIT USER
-
-export async function PUT(request: NextRequest, { params }: Props) {
-    const body = await request.json()
-
-    if(!body.name) {
-        return NextResponse.json({ error: "name is required" }, { status: 400});
+    if(params.id > 10) {
+        return NextResponse.json({ error: "User doesn't exit"}, { status: 404});
     }
 
-    if(parseInt(params.id) > 10) {
-        return NextResponse.json({ error: "User does not exist"}, { status: 404})
-    }
-
-    return NextResponse.json({ id: 1, "name": body.name })
+    return NextResponse.json({ id: 1, name: "ariel"});
 }

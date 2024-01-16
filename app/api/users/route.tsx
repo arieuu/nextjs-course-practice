@@ -1,20 +1,16 @@
-import prisma from "../../../prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(request: NextRequest) {
-    const users = await prisma.user.findMany();
-
+export function GET(request: NextRequest) {
+    const users = [
+        {
+            id: 1,
+            name: "ariel"
+        },
+        {
+            id: 2,
+            name: "carvalho"
+        }
+    ]
     return NextResponse.json(users);
-}
-
-export async function POST(request: NextRequest) {
-    const body = await request.json();
-
-
-    if(!body.name) {
-        return NextResponse.json({error: "No name was found"}, {status: 400})
-    }
-
-    return NextResponse.json({id: 1, "name": body.name})
 }
