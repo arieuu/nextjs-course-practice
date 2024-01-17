@@ -1,26 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import schema from "../schema";
+import prisma from "@/prisma/client";
 
 // Route to get objects by id
 
 interface Props {
-    params: { id: number }
+    params: { id: string }
 }
 
-export function GET(request: NextRequest, { params }: Props) {
+export async function GET(request: NextRequest, { params }: Props) {
+    const user = await prisma.user.findUnique({ where: { id: parseInt(params.id)}});
 
-    if(params.id > 10) {
+    if(!user) {
         return NextResponse.json({ error: "User doesn't exit"}, { status: 404});
     }
 
-    return NextResponse.json({ id: 1, name: "ariel"});
+    return NextResponse.json(user);
 }
 
 
 // Edit a specific user
 
 interface Props {
-    params: { id: number }
+    params: { id: string}
 }
 
 export async function PUT(request: NextRequest, { params }: Props) {
@@ -31,23 +33,46 @@ export async function PUT(request: NextRequest, { params }: Props) {
 
     if(!validation.success) return NextResponse.json(validation.error.errors, { status: 400});
 
-    if(params.id > 10) return NextResponse.json({error: "User does not exist"}, { status: 404});
+    const user = await prisma.user.findUnique({ where: { id:parseInt(params.id) }});
 
-    return NextResponse.json({ id: params.id, name: body.name});
+    if(!user) return NextResponse.json({error: "User does not exist"}, { status: 404});
+
+    // Updating user
+
+    const updatedUser = await prisma.user.update({
+        where: {
+            id: parseInt(params.id)
+        },
+
+        data: {
+            name: body.name,
+            email: body.email
+        }
+    }
+    );
+
+    return NextResponse.json(updatedUser);
 }
 
 
 // Delete a specific user
 
 interface Props {
-    params: { id: number }
+    params: { id: string}
 }
 
 export async function DELETE(request: NextRequest, { params }: Props) {
+    const user = await prisma.user.findUnique({
+        where: { id: parseInt(params.id) }
+    });
     
-    if(params.id > 10) return NextResponse.json({ error: "User doesn't exist" }, { status: 400});
+    if(!user) return NextResponse.json({ error: "User doesn't exist" }, { status: 400});
 
     // If everything goes right we delete user
 
-    return NextResponse.json({});
+    const deletedUser = await prisma.user.delete({ where: {
+        id: user.id
+    }});
+
+    return NextResponse.json(deletedUser);
 }
